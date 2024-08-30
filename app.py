@@ -1,6 +1,5 @@
 import streamlit as st
 import pandas as pd
-import matplotlib.pyplot as plt
 
 def main():
     st.title('성적 데이터 시각화 대시보드')
@@ -24,20 +23,10 @@ def main():
             # 메인 차트
             st.header(f'{metric} 기준 과목별 분포')
             
-            fig, ax = plt.subplots(figsize=(10, 6))
-            
             if chart_type == '막대 그래프':
-                df[metric].plot(kind='bar', ax=ax)
+                st.bar_chart(df[metric])
             else:  # 선 그래프
-                df[metric].plot(kind='line', ax=ax)
-            
-            plt.title(f'과목별 {metric} 분포')
-            plt.xlabel('과목')
-            plt.ylabel(metric)
-            plt.xticks(rotation=45, ha='right')
-            plt.tight_layout()
-            
-            st.pyplot(fig)
+                st.line_chart(df[metric])
 
             # 데이터 테이블 표시
             st.header('전체 데이터')
