@@ -1,7 +1,6 @@
 import streamlit as st
 import pandas as pd
-import plotly.express as px
-import io
+import matplotlib.pyplot as plt
 
 def main():
     st.title('성적 데이터 시각화 대시보드')
@@ -25,12 +24,20 @@ def main():
             # 메인 차트
             st.header(f'{metric} 기준 과목별 분포')
             
-            if chart_type == '막대 그래프':
-                fig = px.bar(df, x=df.index, y=metric, title=f'과목별 {metric} 분포')
-            else:  # 선 그래프
-                fig = px.line(df, x=df.index, y=metric, title=f'과목별 {metric} 분포')
+            fig, ax = plt.subplots(figsize=(10, 6))
             
-            st.plotly_chart(fig)
+            if chart_type == '막대 그래프':
+                df[metric].plot(kind='bar', ax=ax)
+            else:  # 선 그래프
+                df[metric].plot(kind='line', ax=ax)
+            
+            plt.title(f'과목별 {metric} 분포')
+            plt.xlabel('과목')
+            plt.ylabel(metric)
+            plt.xticks(rotation=45, ha='right')
+            plt.tight_layout()
+            
+            st.pyplot(fig)
 
             # 데이터 테이블 표시
             st.header('전체 데이터')
